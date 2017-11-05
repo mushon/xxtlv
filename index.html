@@ -50,15 +50,19 @@ map.on('load', function() {
           closeOnClick: false
       });
 
+      map.on('mouseenter', 'tlv_roads_major', function(e) {
+          // Change the cursor style as a UI indicator.
+          map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave','tlv_roads_major', function() {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+      });
+
       map.on('mouseenter', 'tlv_roads_street', function(e) {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = 'pointer';
-
-          // Populate the popup and set its coordinates
-          // based on the feature found.
-          // popup.setLngLat(e.features[0].geometry.coordinates)
-          //     .setHTML(e.features[0].properties.trechov2)
-          //     .addTo(map);
       });
 
       map.on('mouseleave','tlv_roads_street', function() {
@@ -66,8 +70,21 @@ map.on('load', function() {
           popup.remove();
       });
 
-      map.on('click','tlv_roads_street', function(e) {
-        var url = "https://he.m.wikipedia.org/wiki/" + e.features[0].properties.trechov2;
+      map.on('mouseenter', 'tlv_roads_minor', function(e) {
+          // Change the cursor style as a UI indicator.
+          map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave','tlv_roads_minor', function() {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+      });
+
+      map.on('click', function(e) {
+        // set bbox as 5px reactangle area around clicked point
+        var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+        var features = map.queryRenderedFeatures(bbox, { layers: ['tlv_roads_major','tlv_roads_street','tlv_roads_minor'] });
+        var url = "https://he.m.wikipedia.org/wiki/" + features[0].properties.trechov2;
         window.open(url, 'wiki');
       });
 
