@@ -35,11 +35,18 @@
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibXVzaG9uIiwiYSI6IjY1bHhhTkEifQ.DhW2zcurHHBtmnc2FsMBqg';
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
+
+var bounds = [
+    [34.72,32.02], // Southwest coordinates
+    [34.9,32.17]  // Northeast coordinates
+];
+
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mushon/cj98fcqw62bkf2rph7wso7080', // stylesheet location
     center: [34.773489,32.056726], // starting position [lng, lat]
-    zoom: 14.5 // starting zoom
+    zoom: 16, // starting zoom
+    maxBounds: bounds
 });
 
 map.on('load', function() {
