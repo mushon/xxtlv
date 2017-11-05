@@ -9,19 +9,114 @@
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+        #wiki {
+          position: fixed;
+          height: 100%;
+          width: 25%;
+          z-index: 1000;
+          right:0;
+        }
     </style>
 </head>
 <body>
+  <div id='side'>
+    <iframe id='wiki' name="wiki" src="https://he.m.wikipedia.org/wiki/גילה_קצב">
+      Try it Yourself »
+    </iframe>
+  </div>
 
 <div id='map'></div>
+
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibXVzaG9uIiwiYSI6IjY1bHhhTkEifQ.DhW2zcurHHBtmnc2FsMBqg';
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mushon/cj8plj7vi9s3x2slbd8l9epm8', // stylesheet location
+    style: 'mapbox://styles/mushon/cj9cf1zgz616p2snxqqphc6u0', // stylesheet location
     center: [34.773489,32.056726], // starting position [lng, lat]
     zoom: 14.5 // starting zoom
+});
+
+map.on('load', function() {
+
+  // Create a popup, but don't add it to the map yet.
+      var popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+      });
+
+      map.on('mouseenter', 'tlv_roads_street', function(e) {
+          // Change the cursor style as a UI indicator.
+          map.getCanvas().style.cursor = 'pointer';
+
+          // Populate the popup and set its coordinates
+          // based on the feature found.
+          // popup.setLngLat(e.features[0].geometry.coordinates)
+          //     .setHTML(e.features[0].properties.trechov2)
+          //     .addTo(map);
+      });
+
+      map.on('mouseleave','tlv_roads_street', function() {
+          map.getCanvas().style.cursor = '';
+          popup.remove();
+      });
+
+      map.on('click','tlv_roads_street', function(e) {
+        var url = "https://he.m.wikipedia.org/wiki/" + e.features[0].properties.trechov2;
+        window.open(url, 'wiki');
+      });
+
+    // Add the source to query. In this example we're using
+    // county polygons uploaded as vector tiles
+    // map.addSource('streets', {
+    //     "type": "vector",
+    //     "url": "mushon.cj9fhr0n22n9b2wpyapwbndnb-4lv34"
+    // });
+    //
+    // map.addLayer({
+    //     "id": "counties",
+    //     "type": "fill",
+    //     "source": "counties",
+    //     "source-layer": "original",
+    //     "paint": {
+    //         "fill-outline-color": "rgba(0,0,0,0.1)",
+    //         "fill-color": "rgba(0,0,0,0.1)"
+    //     }
+    // }, 'place-city-sm'); // Place polygon under these labels.
+    //
+    // map.addLayer({
+    //     "id": "roads-highlighted",
+    //     "type": "line",
+    //     "source": "streets",
+    //     "source-layer": "original",
+    //     "paint": {
+    //         "line-color": "hsl(0, 100%, 57%)",
+    //         "line-opacity": 0.5,
+    //         "line-width": 20
+    //     },
+    //     "filter": ["in", "FIPS", ""]
+    // }, 'tlv_roads_minor-case'); // Place polygon under these labels.
+
+    // map.on('click', function(e) {
+    //     // set bbox as 5px reactangle area around clicked point
+    //     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+    //     var features = map.queryRenderedFeatures(bbox, { layers: ['tlv_roads_major','tlv_roads_street','tlv_roads_minor'] });
+    //
+    //     // Run through the selected features and set a filter
+    //     // to match features with unique FIPS codes to activate
+    //     // the `counties-highlighted` layer.
+    //     var filter = features.reduce(function(memo, feature) {
+    //         memo.push(feature.properties.FIPS);
+    //         return memo;
+    //     }, ['in', 'FIPS']);
+    //
+    //     map.setFilter("roads-highlighted", filter);
+    // });
 });
 
 </script>
