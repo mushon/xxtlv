@@ -8,7 +8,7 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; left:0; width:75%; right:25% }
+        #map { position:absolute; top:0; bottom:0; left:0; right:320px }
         .mapboxgl-popup {
             max-width: 400px;
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -16,21 +16,21 @@
         #wiki {
           position: fixed;
           height: 100%;
-          width: 25%;
+          width: 320px;
           z-index: 1000;
           right:0;
           border: 0;
         }
         @media screen and (max-width: 900px) {
-          #map { width:100%; right:0; bottom: 40%}
+          #map { width:100%; right:0; bottom: 50%}
           #wiki {
-            height: 40%;
+            height: 50%;
             width: 100%;
             bottom: 0;
           }
           #side {
-            -webkit-overflow-scrolling: touch;
-  	        overflow-y: scroll;
+            overflow:auto;
+            -webkit-overflow-scrolling:touch
           }
         }
     </style>
