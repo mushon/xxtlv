@@ -42,6 +42,30 @@
 
 
 <script>
+setTimeout(function () {
+        var startY = 0;
+        var startX = 0;
+        var b = document.body;
+        b.addEventListener('touchstart', function (event) {
+            parent.window.scrollTo(0, 1);
+            startY = event.targetTouches[0].pageY;
+            startX = event.targetTouches[0].pageX;
+        });
+        b.addEventListener('touchmove', function (event) {
+            event.preventDefault();
+            var posy = event.targetTouches[0].pageY;
+            var h = parent.document.getElementById("side");
+            var sty = h.scrollTop;
+
+            var posx = event.targetTouches[0].pageX;
+            var stx = h.scrollLeft;
+            h.scrollTop = sty - (posy - startY);
+            h.scrollLeft = stx - (posx - startX);
+            startY = posy;
+            startX = posx;
+        });
+    }, 1000);
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibXVzaG9uIiwiYSI6IjY1bHhhTkEifQ.DhW2zcurHHBtmnc2FsMBqg';
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
 
