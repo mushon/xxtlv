@@ -118,9 +118,7 @@
 
 <body>
     <div id='side'>
-        <iframe id='wiki' name="wiki" src="https://he.m.wikipedia.org/wiki/גילה_קצב">
-            Try it Yourself »
-        </iframe>
+        <iframe id='wiki' name="wiki" src="https://he.m.wikipedia.org/wiki/גילה_קצב"></iframe>
     </div>
 
     <div id='map'></div>
@@ -137,10 +135,10 @@
 
 
     <script>
-        var exernalLink = document.getElementById('wikipedia_link'); //or grab it by tagname etc
-        var exernalLinkTitle = document.getElementById('bottom-sheet__title'); //or grab it by tagname etc
-        var bottomSheet = document.getElementById('bottom-sheet'); //or grab it by tagname etc
-        var bottomSheetClose = document.getElementById('bottom-sheet__close'); //or grab it by tagname etc
+        var exernalLink = document.getElementById('wikipedia_link'); 
+        var exernalLinkTitle = document.getElementById('bottom-sheet__title'); 
+        var bottomSheet = document.getElementById('bottom-sheet'); 
+        var bottomSheetClose = document.getElementById('bottom-sheet__close');
 
         // TODO: This is a bad way to detect safari browser
         var isSafari = navigator.vendor ==  "Apple Computer, Inc."
@@ -154,6 +152,7 @@
             navigator.userAgent.match(/Windows Phone/i)
         )
 
+        // Add class "is-safari-mobile"
         if (isSafari && isMobile) {
             // Change css of map
             var wikiobj = document.getElementById("wiki");
@@ -162,7 +161,7 @@
             mapobj.className += " is-safari-mobile";
         }
 
-        // Places information into bottomsheet
+        // Places information into bottom sheet
         function loadBottomSheet(value) {
             var url = "https://he.m.wikipedia.org/wiki/" + value;
             exernalLink.href = url;
@@ -170,7 +169,7 @@
             bottomSheet.className = "is-open";
         }
 
-        // Closes bottomsheet
+        // Closes bottom sheet
         function closeBottomSheet() {
             bottomSheet.className = "";
         }
@@ -269,14 +268,11 @@
                 });
                 var url = "https://he.m.wikipedia.org/wiki/" + features[0].properties.trechov2;
 
-                // If safari mobile, show bottom sheet. else - open wkipedia iframe
+                // If safari mobile, show bottom sheet on click. else - reload wkipedia iframe.
                 if (isSafari && isMobile) {
                         if (features[0].properties.trechov2)
                         {
                             loadBottomSheet(features[0].properties.trechov2);
-                        } else {
-                            // if no street was clicked
-                            closeBottomSheet();
                         }
                 } else {
                     window.open(url, 'wiki');
