@@ -51,7 +51,7 @@
             font-family: 'Secular One', sans-serif;
             position: fixed;
             width: 100%;
-            background: #fff;
+            background: #DC151C;
             box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.20);
             height: 0px;
             transition: all 0.3s ease;
@@ -59,13 +59,14 @@
             overflow:hidden;
             z-index:100;
             bottom:-50px;
+            display:flex;
+            justify-content:space-between;
             
         }
 
         #bottom-sheet.is-open {
             bottom:0px;
-            
-            height: 200px;
+            height: 72px;
             opacity:1;
         }
 
@@ -73,15 +74,20 @@
             font-size: 20px;
             padding-top:24px;
             padding-bottom:40px;
-            color:#DC151C;            
+            color:#fff;            
         }
 
         #wikipedia_link {
             position:relative;
             top:7px;
-            color:#DC151C;
+            color:#fff;
         }
-
+        #bottom-sheet__close {
+            position:relative;
+            top:7px;  
+            color:rgba(255,255,255,0.5);
+            
+        }
         @media screen and (max-width: 900px) {
             #map {
                 width: 100%;
@@ -120,13 +126,13 @@
     <div id='map'></div>
 
     <div id='bottom-sheet'>
-        <div id="bottom-sheet__close">
-            <i class="material-icons">clear</i>
-        </div>
+      
         <div class="bottom-sheet__container">
         <span id="bottom-sheet__title"></span> <a href="" target="_blank" id="wikipedia_link"><i class="material-icons">arrow_back</i></a>
         </div>
-            
+        <div id="bottom-sheet__close">
+            <i class="material-icons">clear</i>
+        </div>
     </div>
 
 
