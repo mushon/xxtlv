@@ -117,104 +117,171 @@
 </head>
 
 <body>
-  <div id='side'>
-    <iframe id='wiki' name="wiki" src="home.html">
-      Try it Yourself »
-    </iframe>
-  </div>
+    <div id='side'>
+      <iframe id='wiki' name="wiki" src="home.html">
+        No support for iFrames? Boooo…
+      </iframe>
+    </div>
 
-<div id='map'></div>
+    <div id='map'></div>
+
+    <div id='bottom-sheet'>
+
+        <div class="bottom-sheet__container">
+        <span id="bottom-sheet__title"></span> <a href="" target="_blank" id="wikipedia_link"><i class="material-icons">arrow_back</i></a>
+        </div>
+        <div id="bottom-sheet__close">
+            <i class="material-icons">clear</i>
+        </div>
+    </div>
 
 
-<script>
-setTimeout(function () {
-      var startY = 0;
-      var startX = 0;
-      var b = document.body;
-      b.addEventListener('touchstart', function (event) {
-          parent.window.scrollTo(0, 1);
-          startY = event.targetTouches[0].pageY;
-          startX = event.targetTouches[0].pageX;
-      });
-      b.addEventListener('touchmove', function (event) {
-          event.preventDefault();
-          var posy = event.targetTouches[0].pageY;
-          var h = parent.document.getElementById("side");
-          var sty = h.scrollTop;
+    <script>
+        var exernalLink = document.getElementById('wikipedia_link');
+        var exernalLinkTitle = document.getElementById('bottom-sheet__title');
+        var bottomSheet = document.getElementById('bottom-sheet');
+        var bottomSheetClose = document.getElementById('bottom-sheet__close');
 
-          var posx = event.targetTouches[0].pageX;
-          var stx = h.scrollLeft;
-          h.scrollTop = sty - (posy - startY);
-          h.scrollLeft = stx - (posx - startX);
-          startY = posy;
-          startX = posx;
-      });
-  }, 1000);
+        // TODO: This is a bad way to detect safari browser
+        var isSafari = navigator.vendor ==  "Apple Computer, Inc."
 
-mapboxgl.accessToken = 'pk.eyJ1IjoibXVzaG9uIiwiYSI6IjY1bHhhTkEifQ.DhW2zcurHHBtmnc2FsMBqg';
-mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
+        var isMobile = (navigator.userAgent.match(/Android/i) ||
+            navigator.userAgent.match(/webOS/i) ||
+            navigator.userAgent.match(/iPhone/i) ||
+            navigator.userAgent.match(/iPad/i) ||
+            navigator.userAgent.match(/iPod/i) ||
+            navigator.userAgent.match(/BlackBerry/i) ||
+            navigator.userAgent.match(/Windows Phone/i)
+        )
 
-var bounds = [
-    [34.72,32.02], // Southwest coordinates
-    [34.9,32.17]  // Northeast coordinates
-];
+        // Add class "is-safari-mobile"
+        if (isSafari && isMobile) {
+            // Change css of map
+            var wikiobj = document.getElementById("wiki");
+            wikiobj.className += " is-safari-mobile";
+            var mapobj = document.getElementById("map");
+            mapobj.className += " is-safari-mobile";
+        }
 
-var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mushon/cj98fcqw62bkf2rph7wso7080', // stylesheet location
-    center: [34.7763943,32.0718548], // starting position [lng, lat]
-    zoom: 16, // starting zoom
-    maxBounds: bounds
-});
+        // Places information into bottom sheet
+        function loadBottomSheet(value) {
+            var url = "https://he.m.wikipedia.org/wiki/" + value;
+            exernalLink.href = url;
+            exernalLinkTitle.innerHTML = "רחוב " + value;
+            bottomSheet.className = "is-open";
+        }
 
-map.on('load', function() {
+        // Closes bottom sheet
+        function closeBottomSheet() {
+            bottomSheet.className = "";
+        }
 
-  // Create a popup, but don't add it to the map yet.
-      var popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false
-      });
+        bottomSheetClose.addEventListener('click', closeBottomSheet);
 
-      map.on('mouseenter', 'tlv_roads_major', function(e) {
-          // Change the cursor style as a UI indicator.
-          map.getCanvas().style.cursor = 'pointer';
-      });
 
-      map.on('mouseleave','tlv_roads_major', function() {
-          map.getCanvas().style.cursor = '';
-          popup.remove();
-      });
+        setTimeout(function () {
+            var startY = 0;
+            var startX = 0;
+            var b = document.body;
+            b.addEventListener('touchstart', function (event) {
+                parent.window.scrollTo(0, 1);
+                startY = event.targetTouches[0].pageY;
+                startX = event.targetTouches[0].pageX;
+            });
+            b.addEventListener('touchmove', function (event) {
+                event.preventDefault();
+                var posy = event.targetTouches[0].pageY;
+                var h = parent.document.getElementById("side");
+                var sty = h.scrollTop;
 
-      map.on('mouseenter', 'tlv_roads_street', function(e) {
-          // Change the cursor style as a UI indicator.
-          map.getCanvas().style.cursor = 'pointer';
-      });
+                var posx = event.targetTouches[0].pageX;
+                var stx = h.scrollLeft;
+                h.scrollTop = sty - (posy - startY);
+                h.scrollLeft = stx - (posx - startX);
+                startY = posy;
+                startX = posx;
+            });
+        }, 1000);
 
-      map.on('mouseleave','tlv_roads_street', function() {
-          map.getCanvas().style.cursor = '';
-          popup.remove();
-      });
+        mapboxgl.accessToken = 'pk.eyJ1IjoibXVzaG9uIiwiYSI6IjY1bHhhTkEifQ.DhW2zcurHHBtmnc2FsMBqg';
+        mapboxgl.setRTLTextPlugin(
+            'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
 
-      map.on('mouseenter', 'tlv_roads_minor', function(e) {
-          // Change the cursor style as a UI indicator.
-          map.getCanvas().style.cursor = 'pointer';
-      });
+        var bounds = [
+            [34.72, 32.02], // Southwest coordinates
+            [34.9, 32.17] // Northeast coordinates
+        ];
 
-      map.on('mouseleave','tlv_roads_minor', function() {
-          map.getCanvas().style.cursor = '';
-          popup.remove();
-      });
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mushon/cj98fcqw62bkf2rph7wso7080', // stylesheet location
+            center: [34.7763943,32.0718548], // starting position [lng, lat]
+            zoom: 16, // starting zoom
+            maxBounds: bounds
+        });
 
-      map.on('click', function(e) {
-        // set bbox as 5px reactangle area around clicked point
-        var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
-        var features = map.queryRenderedFeatures(bbox, { layers: ['tlv_roads_major','tlv_roads_street','tlv_roads_minor'] });
-        var url = "https://he.m.wikipedia.org/wiki/" + features[0].properties.trechov2;
-        window.open(url, 'wiki');
-      });
-});
+        map.on('load', function () {
 
-</script>
+            // Create a popup, but don't add it to the map yet.
+            var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            map.on('mouseenter', 'tlv_roads_major', function (e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'tlv_roads_major', function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+
+            map.on('mouseenter', 'tlv_roads_street', function (e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'tlv_roads_street', function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+
+            map.on('mouseenter', 'tlv_roads_minor', function (e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'tlv_roads_minor', function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+
+            map.on('click', function (e) {
+
+                // set bbox as 5px reactangle area around clicked point
+                var bbox = [
+                    [e.point.x - 5, e.point.y - 5],
+                    [e.point.x + 5, e.point.y + 5]
+                ];
+                var features = map.queryRenderedFeatures(bbox, {
+                    layers: ['tlv_roads_major', 'tlv_roads_street', 'tlv_roads_minor']
+                });
+                var url = "https://he.m.wikipedia.org/wiki/" + features[0].properties.trechov2;
+
+                // If safari mobile, show bottom sheet on click. else - reload wkipedia iframe.
+                if (isSafari && isMobile) {
+                        if (features[0].properties.trechov2)
+                        {
+                            loadBottomSheet(features[0].properties.trechov2);
+                        }
+                } else {
+                    window.open(url, 'wiki');
+                }
+            });
+        });
+    </script>
 
 </body>
 
