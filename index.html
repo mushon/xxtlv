@@ -1,45 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8' />
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
     <style>
-        body { margin:0; padding:0; }
 
-        #map { position:absolute; top:0; bottom:0; left:0; right:320px }
+@import url('https://fonts.googleapis.com/css?family=Secular+One');
+
+
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 320px
+        }
 
         .mapboxgl-popup {
             max-width: 400px;
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
+
         #wiki {
-          position: fixed;
-          height: 100%;
-          width: 320px;
-          z-index: 1000;
-          right:0;
-          border: 0;
+            position: fixed;
+            height: 100%;
+            width: 320px;
+            z-index: 1000;
+            right: 0;
+            border: 0;
+        }
+
+        #wiki.is-safari-mobile {
+            display: none;
+        }
+
+        #bottom-sheet {
+            box-sizing:border-box;
+            direction:rtl;
+            font-family: 'Secular One', sans-serif;
+            position: fixed;
+            width: 100%;
+            background: #DC151C;
+            box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.20);
+            height: 0px;
+            transition: all 0.3s ease;
+            padding:16px;
+            overflow:hidden;
+            z-index:100;
+            bottom:-50px;
+            display:flex;
+            justify-content:space-between;
+
+        }
+
+        #bottom-sheet.is-open {
+            bottom:0px;
+            height: 72px;
+            opacity:1;
+        }
+
+        #bottom-sheet__title {
+            font-size: 20px;
+            padding-top:24px;
+            padding-bottom:40px;
+            color:#fff;
+        }
+
+        #wikipedia_link {
+            position:relative;
+            top:7px;
+            color:#fff;
+        }
+        #bottom-sheet__close {
+            position:relative;
+            top:7px;
+            color:rgba(255,255,255,0.5);
+
         }
         @media screen and (max-width: 900px) {
-          #map { width:100%; right:0; bottom: 50%}
-          #wiki {
-            height: 50%;
-            width: 100%;
-            bottom: 0;
-          }
-          #side {
-            bottom: 0;
-            right: 0;
-            left: 0;
-            overflow:auto;
-            -webkit-overflow-scrolling:touch
-          }
+            #map {
+                width: 100%;
+                right: 0;
+                bottom: 50%
+            }
+            #map.is-safari-mobile {
+                width: 100%;
+                height: 100%;
+                bottom: 0px;
+            }
+            #wiki {
+                height: 50%;
+                width: 100%;
+                bottom: 0;
+            }
+
+            #side {
+                bottom: 0;
+                right: 0;
+                left: 0;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch
+            }
         }
     </style>
 </head>
+
 <body>
   <div id='side'>
     <iframe id='wiki' name="wiki" src="home.html">
@@ -141,4 +217,5 @@ map.on('load', function() {
 </script>
 
 </body>
+
 </html>
