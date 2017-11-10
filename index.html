@@ -71,16 +71,24 @@
         }
 
         #bottom-sheet__title {
-            font-size: 20px;
-            padding-top:24px;
-            padding-bottom:40px;
-            color:#fff;
+          font-size: 20px;
+          padding-top: 4px;
+          color: #fff;
+          display: block;
+          float: right;
+        }
+
+        #wikipedia_link i {
+          display: block;
+          margin-top: 7px;
+          float: right;
         }
 
         #wikipedia_link {
             position:relative;
             top:7px;
             color:#fff;
+            text-decoration: none;
         }
         #bottom-sheet__close {
             position:relative;
@@ -143,7 +151,7 @@
         var bottomSheetClose = document.getElementById('bottom-sheet__close');
 
         // TODO: This is a bad way to detect safari browser
-        var isSafari = navigator.vendor ==  "Apple Computer, Inc."
+        var isSafari = navigator.vendor == "Apple Computer, Inc."
 
         var isMobile = (navigator.userAgent.match(/Android/i) ||
             navigator.userAgent.match(/webOS/i) ||
@@ -153,6 +161,9 @@
             navigator.userAgent.match(/BlackBerry/i) ||
             navigator.userAgent.match(/Windows Phone/i)
         )
+
+        // Safari debugging:
+        // isSafari = isMobile = true;
 
         // Add class "is-safari-mobile"
         if (isSafari && isMobile) {
